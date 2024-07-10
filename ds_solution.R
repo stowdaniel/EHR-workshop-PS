@@ -122,7 +122,7 @@ bal.tab(covs, treat=data$trt, binary="std", continuous="std", s.d.denom="pooled"
 
 # Exercise 7 Adjust on propensity score
 
-model <- glm(outcome ~ trt * PS, data = data, family = binomial) 
+model <- glm(outcome ~ trt + PS, data = data, family = binomial) 
 
 summary(model)
 
@@ -147,6 +147,7 @@ weight_glm<-svyglm(outcome~trt, design=data_svy)
 summary(weight_glm)
 
 weight_glm%>%tidy(exponentiate = TRUE)
+
 # Exercise 10 Perform matching
 
 match_data <-
@@ -197,7 +198,7 @@ summary(matched_logit)
 # Exercise 11 Complete the table using the estimates generate from earlier questions. How do the methods compare?
 
 data.frame(
-  "Method" = c("standard" ,"adjustment", "weighting", "matching"),
+  "Method" = c("standard" ,"prop_adjustment", "prop_weighting", "matching"),
   "N" = c(nobs(adjusted_model), nobs(model),nobs(weight_glm), nobs(matched_logit)),
   "Estimate" = c(
     adjusted_model$coefficients["trt"],
@@ -218,3 +219,4 @@ data.frame(
     summary(matched_logit)$coefficients["trt", 2]
   )
 )
+a
